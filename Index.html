@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla ADS UANDES</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      color: #333;
+    }
+    .subject {
+      background-color: #eee;
+      padding: 0.5rem;
+      margin: 0.3rem 0;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .subject:hover {
+      background-color: #ddd;
+    }
+    .completed {
+      background-color: #c8f7c5;
+      color: #1a5d1a;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Interactiva - Administración de Servicios (UANDES)</h1>
+  <div class="grid" id="malla"></div>  <script>
+    const SEMESTERS = [
+      {
+        name: "1er Semestre",
+        subjects: [
+          "Introducción a los Servicios",
+          "Introducción a la Administración",
+          "Contabilidad",
+          "Álgebra",
+          "Taller de Trabajo en Equipo I",
+          "Taller de Comunicación",
+          "Antropología"
+        ]
+      },
+      {
+        name: "2do Semestre",
+        subjects: [
+          "Estadística I",
+          "Introducción al Marketing",
+          "Taller de Trabajo en Equipo II",
+          "Economía I",
+          "Dirección de Personas",
+          "Inglés I",
+          "Teología I"
+        ]
+      },
+      {
+        name: "3er Semestre",
+        subjects: [
+          "Comportamiento Organizacional",
+          "Diseño de Espacios",
+          "Gestión de Operaciones de Servicio I",
+          "Estadística II",
+          "Inglés II",
+          "Minor",
+          "PEG Electivo"
+        ]
+      },
+      {
+        name: "4to Semestre",
+        subjects: [
+          "Economía II",
+          "Gestión de Operaciones de Servicio II",
+          "Comportamiento del Consumidor",
+          "Teología II",
+          "Minor",
+          "PEG Electivo"
+        ]
+      },
+      {
+        name: "5to Semestre",
+        subjects: [
+          "Evaluación de Proyectos",
+          "Marketing Estratégico",
+          "Finanzas",
+          "Teología III",
+          "Minor",
+          "PEG Electivo"
+        ]
+      },
+      {
+        name: "6to Semestre",
+        subjects: [
+          "Investigación de Mercados",
+          "Contabilidad de Costos",
+          "Introducción a la Gestión de Operaciones",
+          "Administración de Instalaciones",
+          "Ética Profesional",
+          "Optativo de Servicios"
+        ]
+      },
+      {
+        name: "7mo Semestre",
+        subjects: [
+          "Desarrollo Organizacional y Gestión del Cambio",
+          "Salud Ocupacional",
+          "Habilidades Directivas",
+          "Derecho Laboral",
+          "Optativo de Servicios",
+          "Optativo de Servicios"
+        ]
+      },
+      {
+        name: "8vo Semestre",
+        subjects: [
+          "Administración Estratégica",
+          "Innovación y Emprendimiento",
+          "Tecnología en los Servicios",
+          "Creación de Negocios I",
+          "Diseño de Experiencia de Servicios"
+        ]
+      },
+      {
+        name: "9no Semestre",
+        subjects: [
+          "Práctica Profesional",
+          "Creación de Negocios II"
+        ]
+      }
+    ];
+
+    const mallaDiv = document.getElementById("malla");
+
+    const completed = new Set(JSON.parse(localStorage.getItem("completedSubjects") || "[]"));
+
+    function toggle(subject, el) {
+      if (completed.has(subject)) {
+        completed.delete(subject);
+        el.classList.remove("completed");
+      } else {
+        completed.add(subject);
+        el.classList.add("completed");
+      }
+      localStorage.setItem("completedSubjects", JSON.stringify([...completed]));
+    }
+
+    SEMESTERS.forEach((semester) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const title = document.createElement("h2");
+      title.textContent = semester.name;
+      card.appendChild(title);
+      semester.subjects.forEach((subj) => {
+        const sub = document.createElement("div");
+        sub.textContent = subj;
+        sub.className = "subject";
+        if (completed.has(subj)) sub.classList.add("completed");
+        sub.onclick = () => toggle(subj, sub);
+        card.appendChild(sub);
+      });
+      mallaDiv.appendChild(card);
+    });
+  </script></body>
+</html>
